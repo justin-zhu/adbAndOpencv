@@ -1,0 +1,6 @@
+2020-11-05 11:17:19,537 - com.justin.mavenTest.FiveDivisionTest -0    [main] DEBUG com.justin.mavenTest.FiveDivisionTest  - 程序正在启动
+2020-11-05 11:17:20,013 - com.justin.mavenTest.FiveDivisionTest -476  [AWT-EventQueue-0] DEBUG com.justin.mavenTest.FiveDivisionTest  - 测试次数默认为-1
+2020-11-05 11:17:22,545 - com.justin.mavenTest.FiveDivisionTest -3008 [AWT-EventQueue-0] DEBUG com.justin.mavenTest.FiveDivisionTest  - 波特率已变化
+2020-11-05 11:17:22,545 - com.justin.utils.MPrintStream -3008 [AWT-EventQueue-0] INFO  com.justin.utils.MPrintStream  - 2020-11-05 11:17:22:波特率:500K
+2020-11-05 11:17:22,573 - com.justin.utils.MPrintStream -3036 [AWT-EventQueue-0] INFO  com.justin.utils.MPrintStream  - 
+
