@@ -64,7 +64,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 	private JButton buttonStart, buttonEnd;
 	private JComboBox<String> comboBoxCANChannelIndex;
 	private JTextField textFieldTestNum;
-	//添加一条注释
+	//添加一条注释androidTest
 
 	/**
 	 * Launch the application.
