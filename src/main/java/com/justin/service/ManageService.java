@@ -138,6 +138,7 @@ public class ManageService extends Observable {
 			notifyObserversUpdateTestNum();
 			// 删除sdcard下的临时图片
 			delSdcardImage();
+			notifyObserversCleanJTextArea();
 		}
 		Tools.println("程序已执行完成!");
 		notifyObserversUpdateButtonStart();
@@ -149,7 +150,13 @@ public class ManageService extends Observable {
 		setChanged();
 		notifyObservers("updateTestNum");
 	}
-
+	/**
+	 * 通知更新测试次数
+	 */
+	private void notifyObserversCleanJTextArea() {
+		setChanged();
+		notifyObservers("cleanJTextArea");
+	}
 	/**
 	 * 如果指定的测试次数小于0则执行此方法
 	 * @param excelEntieyList
@@ -177,6 +184,7 @@ public class ManageService extends Observable {
 				notifyObserversUpdateTestNum();
 				// 删除sdcard下的临时图片
 				delSdcardImage();
+				notifyObserversCleanJTextArea();
 			}
 
 		}
@@ -316,6 +324,8 @@ public class ManageService extends Observable {
 			// 发送日志记录报文
 			sendErrorRec();
 			// 拋出异常 然后终止当前线程程序运行
+			//将运行状态置为FALSE
+			frameEntiey.setRun(false);
 			throw new RuntimeException("图片匹配失败");
 		}
 	}

@@ -64,7 +64,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 	private JButton buttonStart, buttonEnd;
 	private JComboBox<String> comboBoxCANChannelIndex;
 	private JTextField textFieldTestNum;
-	//添加一条注释androidTest
+	// 添加一条注释androidTest
 
 	/**
 	 * Launch the application.
@@ -90,12 +90,11 @@ public class FiveDivisionTest extends JFrame implements Observer {
 
 	public static void main(String[] args) throws InvocationTargetException, InterruptedException {
 
-		SwingUtilities.invokeAndWait(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					FiveDivisionTest frame = new FiveDivisionTest();
 					frame.setTitle(Tools.getDirectoryName());
-					
 					mPrintStream = new MPrintStream(System.out, textArea);
 					System.setOut(mPrintStream);
 					// 调用new WindowAutoHide构造方法可以使程序贴边自动隐藏
@@ -190,7 +189,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 		buttonStart.setBackground(new Color(102, 102, 102));
 		buttonStart.setActionCommand("buttonStart");
 		buttonStart.addActionListener(actionListener);
-		
+
 		buttonStart.setBounds(587, 6, 93, 23);
 		j1.add(buttonStart);
 
@@ -208,11 +207,11 @@ public class FiveDivisionTest extends JFrame implements Observer {
 		buttonChooseExcel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String path = Tools.getFilePath();
-				if(null!=path) {
+				if (null != path) {
 					chooseExcelPathTextField.setText(path);
 					frameEntiey.setCasePath(path);
 				}
-				
+
 			}
 		});
 		buttonChooseExcel.setBounds(484, 6, 93, 23);
@@ -230,6 +229,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 		scrollPane.setPreferredSize(new Dimension(835, 495));
 		panel_1.add(scrollPane);
 		textArea = new JTextArea();
+		textArea.setEditable(false);
 		textArea.setForeground(new Color(0, 0, 0));
 		textArea.setFont(new Font("宋体", Font.PLAIN, 15));
 		scrollPane.setViewportView(textArea);
@@ -243,7 +243,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 		buttonEnd.setEnabled(false);
 		buttonEnd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				// 点击结束按钮后 将自身按钮重置为不可点击状态
 				buttonEnd.setEnabled(false);
 				// 将运行状态重置为false 程序会执行当当条命令后停止
@@ -358,8 +358,11 @@ public class FiveDivisionTest extends JFrame implements Observer {
 		JButton buttonSaveCurrentConf = new JButton("保存当前配置");
 		buttonSaveCurrentConf.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Tools.writeConf(frameEntiey);
-				JOptionPane.showMessageDialog(null, "配置文件已保存到项目根目录,conf.properties");
+				if (manageService.isCheckDevice()) {
+					Tools.writeConf(frameEntiey);
+					JOptionPane.showMessageDialog(null, "配置文件已保存到项目根目录,conf.properties");
+
+				}
 			}
 		});
 		buttonSaveCurrentConf.setBounds(10, 56, 117, 23);
@@ -368,7 +371,8 @@ public class FiveDivisionTest extends JFrame implements Observer {
 		JButton btnOnlyTest = new JButton("Only Test");
 		btnOnlyTest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				manageService.delSdcardImage();
+				//manageService.delSdcardImage();
+				JOptionPane.showMessageDialog(null, "测试使用");
 			}
 		});
 		btnOnlyTest.setBounds(10, 261, 93, 23);
@@ -500,34 +504,39 @@ public class FiveDivisionTest extends JFrame implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		String command = arg.toString();
-		if(command.equals("updateTestNum")) {
+		if (command.equals("updateTestNum")) {
 			loger.debug("监听到次数已发生变化,更新UI");
 			labelPassNum.setText(frameEntiey.getPassNum() + "");
 			labelFailNum.setText(frameEntiey.getFailNum() + "");
 		}
-		if(command.equals("updateButtonStart")) {
+		if (command.equals("updateButtonStart")) {
 			loger.debug("监听到按钮状态通知,更新开始按钮为可点击");
 			buttonStart.setEnabled(true);
 		}
-		
+		if (command.equals("cleanJTextArea")) {
+			textArea.setText("");
+		}
+
 	}
-	
 
 	private ActionListener actionListener = new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("当前线程名" + Thread.currentThread().getName());
+
 			String command = e.getActionCommand();
-			//开始按钮
-			if(command.equals("buttonStart")) {				
+			// 开始按钮
+			if (command.equals("buttonStart")) {
 				ThreadPool.getCachedThreadPool().execute(new Runnable() {
 
 					@Override
 					public void run() {
 						if (manageService.isCheckDevice()) {
-							//将结束按钮状态更改为可点击状态
+
+							// 将结束按钮状态更改为可点击状态
 							buttonEnd.setEnabled(true);
-							//程序运行后将开始按钮置灰 禁止再次点击
+							// 程序运行后将开始按钮置灰 禁止再次点击
 							buttonStart.setEnabled(false);
 							// 开始测试执行 并将状态更改为true
 							frameEntiey.setRun(true);
@@ -541,8 +550,8 @@ public class FiveDivisionTest extends JFrame implements Observer {
 					}
 				});
 			}
-			//加载上次保存的配置
-			if(command.equals("buttonLoadPreviouConf")) {
+			// 加载上次保存的配置
+			if (command.equals("buttonLoadPreviouConf")) {
 				// 读取项目目录下的配置文件 并将属于重新赋值给frameEntiey
 				Tools.readConf(frameEntiey);
 				comboBoxGetDeviceID.setSelectedItem(frameEntiey.getDeviceID());
@@ -564,7 +573,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 			if (command.equals("buttonChoosePath")) {
 				Tools.println("执行模板选择");
 				String path = Tools.getFilePathOfSave();
-				if(null!=path) {
+				if (null != path) {
 					loger.debug("模板路径:" + path);
 					textFieldModelPath.setText(path);
 					// 将adb截图保存到用户指定目录下的tempImage中
@@ -576,7 +585,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 					frameEntiey.setModelPath(path);
 				}
 			}
-			//模板制作
+			// 模板制作
 			if (command.equals("buttonModeCreate")) {
 				Tools.println("执行模板制作");
 				ThreadPool.getCachedThreadPool().execute(new Runnable() {
@@ -589,7 +598,7 @@ public class FiveDivisionTest extends JFrame implements Observer {
 							frameEntiey.setTestNum(1);
 							manageService.creatModel();
 						}
-							
+
 					}
 				});
 			}

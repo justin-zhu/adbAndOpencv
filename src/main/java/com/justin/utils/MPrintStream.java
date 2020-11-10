@@ -28,6 +28,7 @@ public class MPrintStream extends PrintStream {
 	 * 在这里重截,所有的打印方法都要调用的方法
 	 */
 	public void write(byte[] buf, int off, int len) {
+		logger.debug("stream:"+Thread.currentThread().getName());
 		String message = new String(buf, off, len);
 		logger.info(message);
 		SwingUtilities.invokeLater(new Runnable() {

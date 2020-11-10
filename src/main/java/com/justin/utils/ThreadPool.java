@@ -14,7 +14,7 @@ public class ThreadPool {
 
 	public static ExecutorService getCachedThreadPool() {
 		if (executor == null) {
-			executor = Executors.newFixedThreadPool(5);
+			executor = Executors.newFixedThreadPool(10);
 		}
 		return executor;
 	}
