@@ -1,1 +1,1 @@
-mvn install:install-file -Dfile="D:\Program Files\mvn\ojdbc-10.2.0.4.0.jar" -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar
+mvn install:install-file -Dfile="D:\mydown\adbAndOpencv-androidTestTools\src\main\resources\opencv-2413.jar" -DgroupId=opencv2413 -DartifactId=opencv2413 -Dversion=0.1 -Dpackaging=jar
